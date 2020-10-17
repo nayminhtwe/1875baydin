@@ -21,10 +21,7 @@ module.exports = (sequelize, DataTypes) => {
     //   type: DataTypes.BIGINT,
     //   allowNull: true
     // },
-    name: DataTypes.STRING,
-    email: DataTypes.STRING,
   }, {
-    tableName: 'pet'
   });
   Category.associate = function (models) {
     // associations can be defined here
