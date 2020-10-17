@@ -23,17 +23,7 @@ module.exports = (sequelize, DataTypes) => {
           resolve('success')
         })
     })
-  });
-  User.prototype.checkPassword = (model, password) => {
-    const hashedPassword = model.password
-    return new Promise((resolve, reject) => {
-      bcrypt.compare(password, hashedPassword, (err, success) => {
-        if (err) reject(err)
-        resolve(success)
-      })
-    })
-  }
-
+  })
   User.associate = function(models) {
     // associations can be defined here
   };
