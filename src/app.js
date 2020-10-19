@@ -6,6 +6,7 @@ const db = require('./database/db')
 
 //Routes
 const userRouter = require('./app/routers/userRouter')
+const categoryRouter = require('./app/routers/categoryRouter')
 
 const app = express()
 app.disable('x-powered-by')
@@ -17,6 +18,7 @@ app.use(morgan('dev'))
 
 //routers use
 app.use('/api/user', userRouter)
+app.use('/api/category', categoryRouter)
 
 const localConnection = () => {
     return new Promise((resolve, reject) => {
