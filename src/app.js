@@ -3,10 +3,12 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const morgan = require('morgan')
 const db = require('./database/db')
+const {authCheckMiddleware} = require('./utils/auth')
 
 //Routes
 const userRouter = require('./app/routers/userRouter')
 const categoryRouter = require('./app/routers/categoryRouter')
+const subscriptionRouter = require('./app/routers/subscriptionRouter')
 
 const app = express()
 app.disable('x-powered-by')
@@ -19,6 +21,7 @@ app.use(morgan('dev'))
 //routers use
 app.use('/api/user', userRouter)
 app.use('/api/category', categoryRouter)
+app.use('/api/subscription/', authCheckMiddleware, subscriptionRouter)
 
 const localConnection = () => {
     return new Promise((resolve, reject) => {

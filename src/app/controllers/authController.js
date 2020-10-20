@@ -38,7 +38,7 @@ exports.signIn = async (req, res) => {
             where: {
                 email: req.body.email
             },
-            attributes: ['email', 'password']
+            attributes: ['id', 'email', 'password']
         })
         // cannot find user condition
         if (!user) return res.status(404).send({message: `There is no account with ${req.body.email}`})
