@@ -6,12 +6,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BOOLEAN,
       defaultValue: 1
     }
-  }, {});
+  }, {
+    tableName: 'subscriptions'
+  });
   Subscription.associate = function (models) {
     Subscription.belongsTo(models.User, {
       foreignKey: 'user_id'
     })
-    Subscription.hasMany(models.categorySubscription, {
+    Subscription.hasMany(models.CategorySubscription, {
       foreignKey: 'subscription_id'
     })
   };
