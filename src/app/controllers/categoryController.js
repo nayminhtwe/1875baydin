@@ -1,5 +1,5 @@
 const Category = require('../remote-models').Category
-const { getPaginateInfo, getPaginatedData} = require('../../utils/paginate');
+const { getPaginateInfo, getPaginatedData } = require('../../utils/paginate');
 
 exports.all = (req, res) => {
     const {page, size} = req.query;

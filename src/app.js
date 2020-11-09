@@ -9,6 +9,7 @@ const {authCheckMiddleware} = require('./utils/auth')
 const userRouter = require('./app/routers/userRouter')
 const categoryRouter = require('./app/routers/categoryRouter')
 const subscriptionRouter = require('./app/routers/subscriptionRouter')
+const contentRouter = require('./app/routers/contentRouter')
 
 const app = express()
 app.disable('x-powered-by')
@@ -22,6 +23,7 @@ app.use(morgan('dev'))
 app.use('/api/user', userRouter)
 app.use('/api/category', categoryRouter)
 app.use('/api/subscription/', authCheckMiddleware, subscriptionRouter)
+app.use('/api/content', authCheckMiddleware, contentRouter)
 
 const localConnection = () => {
     return new Promise((resolve, reject) => {
