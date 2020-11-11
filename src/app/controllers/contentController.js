@@ -28,7 +28,7 @@ exports.contents = async (req,res) => {
     })
     console.log(`data is ${categorySubscription}`);
     //check user subscribed requested category or not
-    if (!categorySubscription) return res.status(400).send({message: `${req.user.name} did not subscribe to requested category`})
+    if (categorySubscription.length == 0) return res.status(400).send({message: `${req.user.name} did not subscribe to requested category`})
     console.log(categorySubscription);
     const date_range = {
         start_date : categorySubscription.start_date,
