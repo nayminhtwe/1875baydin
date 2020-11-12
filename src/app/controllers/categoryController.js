@@ -9,6 +9,7 @@ exports.all = (req, res) => {
         where: {
             parent_id: null
         },
+        include: [{model: Category, as: "sub-categories"}],
         limit,offset
     }).then(data => {
         const responseData = getPaginatedData(data, page, limit)
@@ -28,7 +29,14 @@ exports.findOne = (req, res) => {
         where: {
             id: id
         },
-        include: Category
+        include: [{
+            model: Category,
+            as: "sub-categories",
+            include: [{
+                model: Category,
+                as: "sub-categories"
+            }]
+        }]
     }).then(result => {
         res.send(result)
     }).catch(err => {
