@@ -10,6 +10,7 @@ const userRouter = require('./app/routers/userRouter')
 const categoryRouter = require('./app/routers/categoryRouter')
 const subscriptionRouter = require('./app/routers/subscriptionRouter')
 const contentRouter = require('./app/routers/contentRouter')
+const formRouter = require('./app/routers/formRouter')
 
 const app = express()
 app.disable('x-powered-by')
@@ -24,6 +25,7 @@ app.use('/api/user', userRouter)
 app.use('/api/category', categoryRouter)
 app.use('/api/subscription/', authCheckMiddleware, subscriptionRouter)
 app.use('/api/content', authCheckMiddleware, contentRouter)
+app.use('/api/form', authCheckMiddleware, formRouter)
 
 const localConnection = () => {
     return new Promise((resolve, reject) => {

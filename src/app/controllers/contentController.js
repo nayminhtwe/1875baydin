@@ -5,9 +5,9 @@ const { getPaginateInfo,getPaginatedData } = require('../../utils/paginate')
 const { now,checkValidDate } = require('../../utils/dateTime')
 
 exports.contents = async (req,res) => {
-    const {page, size, category_id} = req.query
+    const {page, size, category_id, content_category_id} = req.query
     //check category_id contains or not.
-    if (!category_id) return res.status(400).send({message: "Category ID is required to get specific contents!"})
+    if (!category_id || !content_category_id) return res.status(400).send({message: "Category ID and Content Category ID is required to get specific contents!"})
 
     const subscription = await Subscription.findOne({
         where: {
@@ -15,7 +15,7 @@ exports.contents = async (req,res) => {
         }
     })
     //check user has ever subscribed or not 
-    if (!subscription) return res.status(400).send({message: `${req.user.name} has never subscribed any services.`})
+    if (!subscription) return res.status(400).send({message: `${req.user.name} has never been subscribed any services.`})
     const categorySubscription = await CategorySubscription.findAll({
         limit: 1,
         where: {
@@ -26,10 +26,8 @@ exports.contents = async (req,res) => {
             ['createdAt', 'DESC']
         ]
     })
-    console.log(`data is ${categorySubscription}`);
     //check user subscribed requested category or not
     if (categorySubscription.length == 0) return res.status(400).send({message: `${req.user.name} did not subscribe to requested category`})
-    console.log(categorySubscription);
     const date_range = {
         start_date : categorySubscription.start_date,
         end_date : categorySubscription.end_date
@@ -39,7 +37,7 @@ exports.contents = async (req,res) => {
     if (!subscription_is_valid) return res.status(400).send({message: "Subscription period is over."})
     const {limit, offset} = getPaginateInfo(page, size)
     Content.findAndCountAll({
-        where: {category_id : category_id},
+        where: {category_id : content_category_id},
         limit, offset,
         order: [
             ['createdAt', 'DESC']
