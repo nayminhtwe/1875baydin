@@ -1,4 +1,5 @@
 const User = require('../local-models').User
+const {getSubscription} = require('../../utils/helper')
 const {
     createAccessToken,
     validatePassword
@@ -58,4 +59,15 @@ exports.signIn = async (req, res) => {
         return res.status(500).send('Internal Server Error')
     }
     
+}
+
+exports.profile = async (req,res) => {
+    const subscription = await getSubscription(req.user.id)
+    const data = {
+        name: req.user.name,
+        email: req.user.email,
+        active: subscription.active,
+        subscribed_categories: subscription.subscribed_categories
+    }
+    return res.send({data: data})
 }

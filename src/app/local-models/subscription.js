@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'user_id'
     })
     Subscription.hasMany(models.CategorySubscription, {
-      foreignKey: 'subscription_id'
+      foreignKey: 'subscription_id',
+      as: 'subscribed_categories'
     })
   };
   return Subscription;

@@ -3,17 +3,14 @@ const CategorySubscription = require('../local-models').CategorySubscription
 const Content = require('../remote-models').Content
 const { getPaginateInfo,getPaginatedData } = require('../../utils/paginate')
 const { now,checkValidDate } = require('../../utils/dateTime')
+const {getSubscription} = require('../../utils/helper')
 
 exports.contents = async (req,res) => {
     const {page, size, category_id, content_category_id} = req.query
     //check category_id contains or not.
     if (!category_id || !content_category_id) return res.status(400).send({message: "Category ID and Content Category ID is required to get specific contents!"})
 
-    const subscription = await Subscription.findOne({
-        where: {
-            user_id : req.user.id
-        }
-    })
+    const subscription = await getSubscription(req.user.id)
     //check user has ever subscribed or not 
     if (!subscription) return res.status(400).send({message: `${req.user.name} has never been subscribed any services.`})
     const categorySubscription = await CategorySubscription.findAll({

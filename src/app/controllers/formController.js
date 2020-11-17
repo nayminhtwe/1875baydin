@@ -1,12 +1,8 @@
-const Subscription = require('../local-models').Subscription
 const Form = require('../local-models').Form
+const {getSubscription} = require('../../utils/helper')
 
 exports.create = async (req,res) => {
-    const subscription = await Subscription.findOne({
-        where: {
-            user_id: req.user.id
-        }
-    })
+    const subscription = await getSubscription(req.user.id)
     //check user has ever subscribed or not 
     if (!subscription) return res.status(400).send({
         message: `${req.user.name} has never been subscribed any services.`

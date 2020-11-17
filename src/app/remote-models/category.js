@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
     // associations can be defined here
     Category.hasMany(models.Category, {
       foreignKey: 'parent_id',
-      as: 'sub-categories'
+      as: 'sub_categories'
     })
   };
   return Category;
