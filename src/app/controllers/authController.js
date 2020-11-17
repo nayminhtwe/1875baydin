@@ -67,7 +67,7 @@ exports.profile = async (req,res) => {
         name: req.user.name,
         email: req.user.email,
         active: subscription.active,
-        subscribed_categories: subscription.subscribed_categories
+        subscribed_categories: subscription.CategorySubscriptions
     }
     return res.send({data: data})
 }

@@ -6,7 +6,9 @@ exports.getSubscription = user_id => {
         where: {user_id : user_id},
         include: {
             model: CategorySubscription,
-            as: 'subscribed_categories'
-        }
+        },
+        order: [
+            ['CategorySubscriptions', 'createdAt', 'desc']
+        ]
     })
 }
