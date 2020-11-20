@@ -1,5 +1,8 @@
 const User = require('../local-models').User
-const {getSubscription} = require('../../utils/helper')
+const Category = require('../remote-models').Category
+const {
+    getSubscription
+} = require('../../utils/helper')
 const {
     createAccessToken,
     validatePassword
@@ -33,7 +36,9 @@ exports.signIn = async (req, res) => {
             message: 'Email and Password Required'
         })
     }
-    const invalidMsg = { message: "Invalid Email and Password Combination." }
+    const invalidMsg = {
+        message: "Invalid Email and Password Combination."
+    }
     try {
         const user = await User.findOne({
             where: {
@@ -42,7 +47,9 @@ exports.signIn = async (req, res) => {
             attributes: ['id', 'email', 'password']
         })
         // cannot find user condition
-        if (!user) return res.status(404).send({message: `There is no account with ${req.body.email}`})
+        if (!user) return res.status(404).send({
+            message: `There is no account with ${req.body.email}`
+        })
 
         //check password valid or not
         const match = await validatePassword(req.body.password, user.password)
@@ -55,19 +62,40 @@ exports.signIn = async (req, res) => {
             message: 'Login Successful.',
             access_token: token
         })
-    }catch (e) {
+    } catch (e) {
         return res.status(500).send('Internal Server Error')
     }
-    
+
 }
 
-exports.profile = async (req,res) => {
+exports.profile = async (req, res) => {
     const subscription = await getSubscription(req.user.id)
-    const data = {
-        name: req.user.name,
-        email: req.user.email,
-        active: subscription.active,
-        subscribed_categories: subscription.CategorySubscriptions
-    }
-    return res.send({data: data})
+    const categorySubscriptions = subscription.CategorySubscriptions
+
+    let subscribed_categories = categorySubscriptions.map(async cs => {
+        let category = await Category.findOne({
+            where: {
+                id: cs.category_id
+            }
+        })
+        return {
+            category_id: category.id,
+            category_title: category.title,
+            category_subtitle: category.subtitle,
+            image: category.image,
+            start_date: cs.start_date,
+            end_date: cs.end_date
+        }
+    })
+    Promise.all(subscribed_categories).then(categories => {
+        const data = {
+            name: req.user.name,
+            email: req.user.email,
+            active: subscription.active,
+            subscribed_categories: categories
+        }
+        return res.send({
+            data: data
+        })
+    })
 }
