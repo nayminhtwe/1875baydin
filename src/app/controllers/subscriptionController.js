@@ -48,3 +48,9 @@ exports.subscribe = async (req, res) => {
 exports.activeCategories = (req, res) => {
 
 }
+
+exports.preCreate = (req, res) => {
+    res.send({
+        message: 'precreate'
+    })
+}
