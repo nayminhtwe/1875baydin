@@ -22,6 +22,7 @@ app.use(morgan('dev'))
 
 //routers use
 app.use('/api/user', userRouter)
+app.use('/api/kbz', userRouter)
 app.use('/api/category', categoryRouter)
 app.use('/api/subscription/', authCheckMiddleware, subscriptionRouter)
 app.use('/api/kbz/', subscriptionRouter)

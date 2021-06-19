@@ -99,3 +99,59 @@ exports.profile = async (req, res) => {
         })
     })
 }
+
+exports.userInfo = (req, res) => {
+
+    const kbzMerchCode = '200170';
+    const kbzAppId = 'kp9539d5120b864436980c3f25966215';
+    const kbzKey = 'zKyBnbqZYQ0P^H^4SSaBu3Bw&hsJAYlZ';
+    const access_token = req.body.access_token;
+
+    const nonce_str = randomString()
+
+    const data = 'timestamp=1535166225&method=kbz.payment.queryCustInfo&nonce_str=' + nonce_str + '&version=1.0&appid=' + kbzAppId + '&merch_code=' + kbzMerchCode + '&trade_type=APPH5&access_token=' + access_token + '&resource_type=OPENID&key' +  kbzKey;
+
+    var crypto = require('crypto');
+    var sign_userInfo = crypto.createHash('sha256').update(data).digest('hex');
+
+    const axios = require('axios');
+
+    axios({
+        url: 'http://api.kbzpay.com/web/gateway/uat/queryCustInfo',
+        method: 'POST',
+        headers: {
+            'accept': 'application/json',
+            'cache-control': 'no-cache',
+            'content-type': 'application/json',
+            'postman-token': '5a9daab7-0f06-d607-bfbb-7dd422b9bf1d'
+        },
+        data: {
+            Request: {
+                method: 'kbz.payment.queryCustInfo',
+                timestamp: '1535166225',
+                nonce_str: nonce_str,
+                sign_type: 'SHA256',
+                sign: sign_userInfo,
+                version: '1.0',
+                biz_content: {
+                    merch_code: kbzMerchCode,
+                    appid: kbzAppId,
+                    trade_type: 'APPH5',
+                    access_token: access_token,
+                    resource_type:'OPENID'
+                }
+            }
+        }
+    }).then(response => {
+
+        res.send({
+
+            openID: response.data.Response.openID,
+
+        })
+
+    }).catch(error => {
+        console.log(error)
+    })
+
+}
