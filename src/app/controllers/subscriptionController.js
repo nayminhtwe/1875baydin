@@ -102,7 +102,7 @@ exports.preCreate = (req, res) => {
         }
     }).then(response => {
 
-        const user_id = req.body.user.id;
+        const user_id = req.user.id;
         const category_id = req.body.category_id;
         Order.create({
             user_id: user_id,
@@ -146,9 +146,9 @@ exports.kbzCallback = (req, res) => {
             },
             {
                 where:
-                    {
-                        order_id: res.Request.merch_order_id
-                    }
+                {
+                    order_id: res.Request.merch_order_id
+                }
             }
         ).then(count => {
 
@@ -160,9 +160,9 @@ exports.kbzCallback = (req, res) => {
             },
             {
                 where:
-                    {
-                        order_id: res.Request.merch_order_id
-                    }
+                {
+                    order_id: res.Request.merch_order_id
+                }
             }
         ).then(count => {
 
