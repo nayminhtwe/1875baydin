@@ -1,7 +1,7 @@
 const Subscription = require('../local-models').Subscription
 const Order = require('../local-models').Order
-const {now, addDatesFromNow} = require('../../utils/dateTime')
-const {RandomOrderString, randomString} = require('../../utils/helper')
+const { now, addDatesFromNow } = require('../../utils/dateTime')
+const { RandomOrderString, randomString } = require('../../utils/helper')
 
 exports.subscribe = async (req, res) => {
     const user_id = req.user.id
