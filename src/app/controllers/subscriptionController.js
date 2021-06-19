@@ -1,5 +1,7 @@
 const Subscription = require('../local-models').Subscription
-const { now, addDatesFromNow } = require('../../utils/dateTime')
+const Order = require('../local-models').Order
+const {now, addDatesFromNow} = require('../../utils/dateTime')
+const {RandomOrderString, randomString} = require('../../utils/helper')
 
 exports.subscribe = async (req, res) => {
     const user_id = req.user.id
@@ -50,7 +52,93 @@ exports.activeCategories = (req, res) => {
 }
 
 exports.preCreate = (req, res) => {
-    res.send({
-        message: 'precreate'
+
+
+    const kbzMerchCode = '200170';
+    const kbzAppId = 'kp9539d5120b864436980c3f25966215';
+    const kbzKey = 'zKyBnbqZYQ0P^H^4SSaBu3Bw&hsJAYlZ';
+    const kbzNotifyUrl = 'https://1875pb.blueplanet.com.mm/api/kbz/callback';
+
+    const order_id = RandomOrderString()
+    const nonce_str = randomString()
+    const amount = '1000'
+
+    const data = 'appid=' + kbzAppId + '&callback_info=urlencoede.&merch_code='  + kbzMerchCode + '&merch_order_id='  + order_id + '&method=kbz.payment.precreate&nonce_str=' + nonce_str + '&notify_url=' + kbzNotifyUrl + '&timeout_express=100m&timestamp=1535166225&title=SawShinTest&total_amount='  + amount + '&trade_type=APPH5&trans_currency=MMK&version=1.0&key='  + kbzKey;
+
+    var crypto = require('crypto');
+    var sign_precreate = crypto.createHash('sha256').update(data).digest('hex');
+
+    const axios = require('axios');
+
+    axios({
+        url: 'http://api.kbzpay.com/payment/gateway/uat/precreate',
+        method: 'POST',
+        headers: {
+            'accept': 'application/json',
+            'cache-control': 'no-cache' ,
+            'content-type': 'application/json' ,
+            'postman-token': '5a9daab7-0f06-d607-bfbb-7dd422b9bf1d'
+        },
+        data: {
+            Request:    {
+                timestamp: '1535166225',
+                method: 'kbz.payment.precreate',
+                notify_url: kbzNotifyUrl,
+                nonce_str: nonce_str,
+                sign_type: 'SHA256',
+                sign: sign_precreate,
+                version: '1.0',
+                biz_content: {
+                    merch_order_id: order_id,
+                    merch_code: kbzMerchCode,
+                    appid: kbzAppId,
+                    trade_type: 'APPH5',
+                    title: '1875Baydin',
+                    total_amount: amount,
+                    trans_currency: 'MMK',
+                    timeout_express: '100m',
+                    callback_info: 'urlencoede',
+                }
+            }
+        }
+    }).then(response => {
+        console.log(response);
+    }).catch(error => {
+        console.log(error)
     })
+
+    //
+    // const prepay_id = Response.data.prepay_id;
+    //
+    // const sdo = 'appid=' + kbzAppId + '&merch_code=' + kbzMerchCode + '&nonce_str=' + nonce_str + '&prepay_id=' + prepay_id + '&timestamp=1535166225&key=' + kbzKey;
+    //
+    // var sign_app = crypto.createHash('sha256').update(sdo).digest('hex');
+
+    // res.send({
+    //     order_id: order_id,
+    //     nonce_str : nonce_str,
+    //     message: sign_precreate
+    // })
+
+
+    // const user_id = 1
+    // Order.create({
+    //     user_id: user_id,
+    //     order_id: order_id,
+    //     nonce_str: nonce_str,
+    //     amount: amount
+    // }).then(() => {
+    //     res.send({
+    //         message: 'success'
+    //     })
+    // })
+
+
+    // res.send({
+    //     user_id: user_id,
+    //     order_id: order_id,
+    //     nonce_str: nonce_str,
+    //     amount: amount
+    //         })
+
 }

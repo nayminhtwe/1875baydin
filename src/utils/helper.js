@@ -12,3 +12,25 @@ exports.getSubscription = user_id => {
         ]
     })
 }
+
+exports.randomString = () => {
+
+    var randomstring = require("randomstring");
+    var id = randomstring.generate({
+        charset: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
+        length: 32,
+    });
+    return id
+
+}
+
+exports.RandomOrderString = () => {
+
+    var randomstring = require("randomstring");
+    var id = randomstring.generate({
+        charset: '1234567890',
+        length: 19,
+    });
+    return id
+
+}
