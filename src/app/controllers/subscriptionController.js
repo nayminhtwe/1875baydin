@@ -53,7 +53,6 @@ exports.activeCategories = (req, res) => {
 
 exports.preCreate = (req, res) => {
 
-
     const kbzMerchCode = '200170';
     const kbzAppId = 'kp9539d5120b864436980c3f25966215';
     const kbzKey = 'zKyBnbqZYQ0P^H^4SSaBu3Bw&hsJAYlZ';
@@ -61,13 +60,12 @@ exports.preCreate = (req, res) => {
 
     const order_id = RandomOrderString()
     const nonce_str = randomString()
-    const amount = '1000'
+    const amount = req.amount;
 
     const data = 'appid=' + kbzAppId + '&callback_info=urlencoede&merch_code=' + kbzMerchCode + '&merch_order_id=' + order_id + '&method=kbz.payment.precreate&nonce_str=' + nonce_str + '&notify_url=' + kbzNotifyUrl + '&timeout_express=100m&timestamp=1535166225&title=SawShinTest&total_amount=' + amount + '&trade_type=APPH5&trans_currency=MMK&version=1.0&key=' + kbzKey;
 
     var crypto = require('crypto');
     var sign_precreate = crypto.createHash('sha256').update(data).digest('hex');
-
 
     const axios = require('axios');
 
