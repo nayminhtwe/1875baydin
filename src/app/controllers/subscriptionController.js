@@ -63,11 +63,10 @@ exports.preCreate = (req, res) => {
     const nonce_str = randomString()
     const amount = '1000'
 
-    const data = 'appid=' + kbzAppId + '&callback_info=urlencoede&merch_code='  + kbzMerchCode + '&merch_order_id='  + order_id + '&method=kbz.payment.precreate&nonce_str=' + nonce_str + '&notify_url=' + kbzNotifyUrl + '&timeout_express=100m&timestamp=1535166225&title=SawShinTest&total_amount='  + amount + '&trade_type=APPH5&trans_currency=MMK&version=1.0&key='  + kbzKey;
+    const data = 'appid=' + kbzAppId + '&callback_info=urlencoede&merch_code=' + kbzMerchCode + '&merch_order_id=' + order_id + '&method=kbz.payment.precreate&nonce_str=' + nonce_str + '&notify_url=' + kbzNotifyUrl + '&timeout_express=100m&timestamp=1535166225&title=SawShinTest&total_amount=' + amount + '&trade_type=APPH5&trans_currency=MMK&version=1.0&key=' + kbzKey;
 
     var crypto = require('crypto');
     var sign_precreate = crypto.createHash('sha256').update(data).digest('hex');
-
 
 
     const axios = require('axios');
@@ -77,12 +76,12 @@ exports.preCreate = (req, res) => {
         method: 'POST',
         headers: {
             'accept': 'application/json',
-            'cache-control': 'no-cache' ,
-            'content-type': 'application/json' ,
+            'cache-control': 'no-cache',
+            'content-type': 'application/json',
             'postman-token': '5a9daab7-0f06-d607-bfbb-7dd422b9bf1d'
         },
         data: {
-            Request:    {
+            Request: {
                 timestamp: '1535166225',
                 method: 'kbz.payment.precreate',
                 notify_url: kbzNotifyUrl,
@@ -104,12 +103,16 @@ exports.preCreate = (req, res) => {
             }
         }
     }).then(response => {
+
         const user_id = req.user.id;
+        const category_id = req.category_id;
         Order.create({
             user_id: user_id,
             order_id: order_id,
             nonce_str: nonce_str,
-            amount: amount
+            payment_status: '1',
+            amount: amount,
+            category_id: category_id
         })
 
         const prepay_id = response.data.Response.prepay_id;
@@ -120,9 +123,9 @@ exports.preCreate = (req, res) => {
 
         res.send({
 
-            prepay_id : prepay_id,
-            order_info : sdo,
-            sign_app : sign_app,
+            prepay_id: prepay_id,
+            order_info: sdo,
+            sign_app: sign_app,
 
         })
 
@@ -134,7 +137,43 @@ exports.preCreate = (req, res) => {
 
 exports.kbzCallback = (req, res) => {
 
+    console.log(req)
+
+    const trade_status = res.Request.trade_status;
+
+    if (trade_status == 'PAY_SUCCESS') {
+        Order.update(
+            {
+                payment_status: '0'
+            },
+            {
+                where:
+                    {
+                        order_id: res.Request.merch_order_id
+                    }
+            }
+        ).then(count => {
+
+        });
+    } else {
+        Order.update(
+            {
+                payment_status: '1'
+            },
+            {
+                where:
+                    {
+                        order_id: res.Request.merch_order_id
+                    }
+            }
+        ).then(count => {
+
+        });
+    }
+
     res.send({
-        message: 'success'
+
+        message: 'Rows updated'
+
     })
 }
