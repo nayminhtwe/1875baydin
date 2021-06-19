@@ -4,7 +4,9 @@ module.exports = (sequelize, DataTypes) => {
         user_id: DataTypes.INTEGER,
         order_id: DataTypes.STRING,
         nonce_str: DataTypes.STRING,
-        amount: DataTypes.STRING,
+        amount: DataTypes.BIGINT,
+        payment_status: DataTypes.INTEGER,
+        category_id:DataTypes.INTEGER,
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE
     }, {tableName: 'orders'});

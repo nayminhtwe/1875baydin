@@ -25,10 +25,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.BIGINT,
       allowNull: true
     },
-    sort: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
     web_url: {
       type: DataTypes.STRING,
       allowNull: true

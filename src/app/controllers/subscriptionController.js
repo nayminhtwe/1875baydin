@@ -63,10 +63,12 @@ exports.preCreate = (req, res) => {
     const nonce_str = randomString()
     const amount = '1000'
 
-    const data = 'appid=' + kbzAppId + '&callback_info=urlencoede.&merch_code='  + kbzMerchCode + '&merch_order_id='  + order_id + '&method=kbz.payment.precreate&nonce_str=' + nonce_str + '&notify_url=' + kbzNotifyUrl + '&timeout_express=100m&timestamp=1535166225&title=SawShinTest&total_amount='  + amount + '&trade_type=APPH5&trans_currency=MMK&version=1.0&key='  + kbzKey;
+    const data = 'appid=' + kbzAppId + '&callback_info=urlencoede&merch_code='  + kbzMerchCode + '&merch_order_id='  + order_id + '&method=kbz.payment.precreate&nonce_str=' + nonce_str + '&notify_url=' + kbzNotifyUrl + '&timeout_express=100m&timestamp=1535166225&title=SawShinTest&total_amount='  + amount + '&trade_type=APPH5&trans_currency=MMK&version=1.0&key='  + kbzKey;
 
     var crypto = require('crypto');
     var sign_precreate = crypto.createHash('sha256').update(data).digest('hex');
+
+
 
     const axios = require('axios');
 
@@ -93,7 +95,7 @@ exports.preCreate = (req, res) => {
                     merch_code: kbzMerchCode,
                     appid: kbzAppId,
                     trade_type: 'APPH5',
-                    title: '1875Baydin',
+                    title: 'SawShinTest',
                     total_amount: amount,
                     trans_currency: 'MMK',
                     timeout_express: '100m',
@@ -102,43 +104,37 @@ exports.preCreate = (req, res) => {
             }
         }
     }).then(response => {
-        console.log(response);
+        const user_id = req.user.id;
+        Order.create({
+            user_id: user_id,
+            order_id: order_id,
+            nonce_str: nonce_str,
+            amount: amount
+        })
+
+        const prepay_id = response.data.Response.prepay_id;
+
+        const sdo = 'appid=' + kbzAppId + '&merch_code=' + kbzMerchCode + '&nonce_str=' + nonce_str + '&prepay_id=' + prepay_id + '&timestamp=1535166225&key=' + kbzKey;
+
+        var sign_app = crypto.createHash('sha256').update(sdo).digest('hex');
+
+        res.send({
+
+            prepay_id : prepay_id,
+            order_info : sdo,
+            sign_app : sign_app,
+
+        })
+
     }).catch(error => {
         console.log(error)
     })
 
-    //
-    // const prepay_id = Response.data.prepay_id;
-    //
-    // const sdo = 'appid=' + kbzAppId + '&merch_code=' + kbzMerchCode + '&nonce_str=' + nonce_str + '&prepay_id=' + prepay_id + '&timestamp=1535166225&key=' + kbzKey;
-    //
-    // var sign_app = crypto.createHash('sha256').update(sdo).digest('hex');
+}
 
-    // res.send({
-    //     order_id: order_id,
-    //     nonce_str : nonce_str,
-    //     message: sign_precreate
-    // })
+exports.kbzCallback = (req, res) => {
 
-
-    // const user_id = 1
-    // Order.create({
-    //     user_id: user_id,
-    //     order_id: order_id,
-    //     nonce_str: nonce_str,
-    //     amount: amount
-    // }).then(() => {
-    //     res.send({
-    //         message: 'success'
-    //     })
-    // })
-
-
-    // res.send({
-    //     user_id: user_id,
-    //     order_id: order_id,
-    //     nonce_str: nonce_str,
-    //     amount: amount
-    //         })
-
+    res.send({
+        message: 'success'
+    })
 }
