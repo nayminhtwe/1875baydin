@@ -60,7 +60,7 @@ exports.preCreate = (req, res) => {
 
     const order_id = RandomOrderString()
     const nonce_str = randomString()
-    const amount = req.amount;
+    const amount = req.body.amount;
 
     const data = 'appid=' + kbzAppId + '&callback_info=urlencoede&merch_code=' + kbzMerchCode + '&merch_order_id=' + order_id + '&method=kbz.payment.precreate&nonce_str=' + nonce_str + '&notify_url=' + kbzNotifyUrl + '&timeout_express=100m&timestamp=1535166225&title=SawShinTest&total_amount=' + amount + '&trade_type=APPH5&trans_currency=MMK&version=1.0&key=' + kbzKey;
 
@@ -102,8 +102,8 @@ exports.preCreate = (req, res) => {
         }
     }).then(response => {
 
-        const user_id = req.user.id;
-        const category_id = req.category_id;
+        const user_id = req.body.user.id;
+        const category_id = req.body.category_id;
         Order.create({
             user_id: user_id,
             order_id: order_id,
