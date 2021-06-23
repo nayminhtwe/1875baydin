@@ -53,6 +53,8 @@ exports.activeCategories = (req, res) => {
 
 exports.preCreate = (req, res) => {
 
+    console.log(req.body)
+
     const kbzMerchCode = '200170';
     const kbzAppId = 'kp9539d5120b864436980c3f25966215';
     const kbzKey = 'zKyBnbqZYQ0P^H^4SSaBu3Bw&hsJAYlZ';

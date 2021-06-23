@@ -7,6 +7,7 @@ const {
     createAccessToken,
     validatePassword
 } = require('../../utils/auth')
+const { RandomOrderString, randomString } = require('../../utils/helper')
 
 exports.signUp = async (req, res) => {
     if (!req.body.email || !req.body.password) {
@@ -109,7 +110,7 @@ exports.userInfo = (req, res) => {
 
     const nonce_str = randomString()
 
-    const data = 'timestamp=1535166225&method=kbz.payment.queryCustInfo&nonce_str=' + nonce_str + '&version=1.0&appid=' + kbzAppId + '&merch_code=' + kbzMerchCode + '&trade_type=APPH5&access_token=' + access_token + '&resource_type=OPENID&key' +  kbzKey;
+    const data = 'timestamp=1535166225&method=kbz.payment.queryCustInfo&nonce_str=' + nonce_str + '&version=1.0&appid=' + kbzAppId + '&merch_code=' + kbzMerchCode + '&trade_type=APPH5&access_token=' + access_token + '&resource_type=OPENID&key' + kbzKey;
 
     var crypto = require('crypto');
     var sign_userInfo = crypto.createHash('sha256').update(data).digest('hex');
@@ -138,7 +139,7 @@ exports.userInfo = (req, res) => {
                     appid: kbzAppId,
                     trade_type: 'APPH5',
                     access_token: access_token,
-                    resource_type:'OPENID'
+                    resource_type: 'OPENID'
                 }
             }
         }
@@ -151,6 +152,12 @@ exports.userInfo = (req, res) => {
         })
 
     }).catch(error => {
+
+        res.send({
+
+            error: error,
+
+        })
         console.log(error)
     })
 
