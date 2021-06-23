@@ -112,10 +112,30 @@ exports.userInfo = (req, res) => {
 
     const data = 'timestamp=1535166225&method=kbz.payment.queryCustInfo&nonce_str=' + nonce_str + '&version=1.0&appid=' + kbzAppId + '&merch_code=' + kbzMerchCode + '&trade_type=APPH5&access_token=' + access_token + '&resource_type=OPENID&key' + kbzKey;
 
+    console.log(data)
+
     var crypto = require('crypto');
     var sign_userInfo = crypto.createHash('sha256').update(data).digest('hex');
 
     const axios = require('axios');
+
+    const postData = {
+        Request: {
+            method: 'kbz.payment.queryCustInfo',
+            timestamp: '1535166225',
+            nonce_str: nonce_str,
+            sign_type: 'SHA256',
+            sign: sign_userInfo,
+            version: '1.0',
+            biz_content: {
+                merch_code: kbzMerchCode,
+                appid: kbzAppId,
+                trade_type: 'APPH5',
+                access_token: access_token,
+                resource_type: 'OPENID'
+            }
+        }
+    }
 
     axios({
         url: 'http://api.kbzpay.com/web/gateway/uat/queryCustInfo',
@@ -126,23 +146,7 @@ exports.userInfo = (req, res) => {
             'content-type': 'application/json',
             'postman-token': '5a9daab7-0f06-d607-bfbb-7dd422b9bf1d'
         },
-        data: {
-            Request: {
-                method: 'kbz.payment.queryCustInfo',
-                timestamp: '1535166225',
-                nonce_str: nonce_str,
-                sign_type: 'SHA256',
-                sign: sign_userInfo,
-                version: '1.0',
-                biz_content: {
-                    merch_code: kbzMerchCode,
-                    appid: kbzAppId,
-                    trade_type: 'APPH5',
-                    access_token: access_token,
-                    resource_type: 'OPENID'
-                }
-            }
-        }
+        data: postData
     }).then(response => {
 
         res.send({
