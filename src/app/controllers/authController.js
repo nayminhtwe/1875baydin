@@ -110,7 +110,8 @@ exports.userInfo = (req, res) => {
 
     const nonce_str = randomString()
 
-    const data = 'timestamp=1535166225&method=kbz.payment.queryCustInfo&nonce_str=' + nonce_str + '&version=1.0&appid=' + kbzAppId + '&merch_code=' + kbzMerchCode + '&trade_type=APPH5&access_token=' + access_token + '&resource_type=OPENID&key=' + kbzKey;
+    // const data = 'timestamp=1535166225&method=kbz.payment.queryCustInfo&nonce_str=' + nonce_str + '&version=1.0&appid=' + kbzAppId + '&merch_code=' + kbzMerchCode + '&trade_type=APPH5&access_token=' + access_token + '&resource_type=OPENID&key=' + kbzKey;
+    const data = 'access_token=' + access_token + '&appid=' + kbzAppId + '&merch_code=' + kbzMerchCode + '&method=kbz.payment.queryCustInfo&nonce_str=' + nonce_str + '&resource_type=OPENID&timestamp=1535166225&trade_type=APPH5&version=1.0&key=' + kbzKey;
 
     console.log(data)
 
