@@ -146,19 +146,14 @@ exports.userInfo = (req, res) => {
     }).then(response => {
 
         res.send({
-
-            openID: response.data.Response.openID,
-
+            response: response.data.Response,
+            openID: response.data.Response.customer_info.openID,
         })
 
     }).catch(error => {
-
-        res.send({
-
-            error: error,
-
+        res.status(400).send({
+            response: error.response.data.Response,
         })
-        console.log(error)
     })
 
 }
