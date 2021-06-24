@@ -126,6 +126,8 @@ exports.preCreate = (req, res) => {
             prepay_id: prepay_id,
             order_info: sdo,
             sign_app: sign_app,
+            order_id: order_id,
+            user_id: user_id
 
         })
 
