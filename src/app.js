@@ -9,6 +9,7 @@ const { authCheckMiddleware } = require('./utils/auth')
 const userRouter = require('./app/routers/userRouter')
 const categoryRouter = require('./app/routers/categoryRouter')
 const subscriptionRouter = require('./app/routers/subscriptionRouter')
+const callbackRouter = require('./app/routers/callbackRouter')
 const contentRouter = require('./app/routers/contentRouter')
 const formRouter = require('./app/routers/formRouter')
 
@@ -22,10 +23,9 @@ app.use(morgan('dev'))
 
 //routers use
 app.use('/api/user', userRouter)
-app.use('/api/kbz', userRouter)
 app.use('/api/category', categoryRouter)
 app.use('/api/subscription/', authCheckMiddleware, subscriptionRouter)
-app.use('/api/kbz/', subscriptionRouter)
+app.use('/api/kbz/', callbackRouter)
 app.use('/api/content', authCheckMiddleware, contentRouter)
 app.use('/api/form', authCheckMiddleware, formRouter)
 
