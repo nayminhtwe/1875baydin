@@ -136,3 +136,19 @@ exports.preCreate = (req, res) => {
     })
 
 }
+
+exports.orders = async (req, res) => {
+    console.log(req.user.id)
+    let orders = await Order.findAll({
+        where: {
+            payment_status: 0,
+            user_id: req.user.id
+
+        }
+    });
+    res.send({
+        message: 'succes',
+        orders: orders
+
+    })
+}
