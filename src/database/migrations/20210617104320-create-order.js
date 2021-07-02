@@ -26,6 +26,9 @@ module.exports = {
             category_id: {
                 type: Sequelize.INTEGER
             },
+            category_name: {
+                type: Sequelize.STRING
+            },
             createdAt: {
                 allowNull: false,
                 type: Sequelize.DATE

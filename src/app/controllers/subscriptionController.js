@@ -106,13 +106,15 @@ exports.preCreate = (req, res) => {
 
         const user_id = req.user.id;
         const category_id = req.body.category_id;
+        const category_name = req.body.category_name;
         Order.create({
             user_id: user_id,
             order_id: order_id,
             nonce_str: nonce_str,
             payment_status: '1',
             amount: amount,
-            category_id: category_id
+            category_id: category_id,
+            category_name: category_name
         })
 
         const prepay_id = response.data.Response.prepay_id;
