@@ -6,11 +6,12 @@ module.exports = (sequelize, DataTypes) => {
         nonce_str: DataTypes.STRING,
         amount: DataTypes.BIGINT,
         payment_status: DataTypes.INTEGER,
-        category_id:DataTypes.INTEGER,
+        category_id: DataTypes.INTEGER,
+        category_name: DataTypes.TEXT,
         createdAt: DataTypes.DATE,
         updatedAt: DataTypes.DATE
-    }, {tableName: 'orders'});
-    Order.associate = function(models) {
+    }, { tableName: 'orders' });
+    Order.associate = function (models) {
         Order.belongsTo(models.User, {
             foreignKey: 'user_id'
         })
