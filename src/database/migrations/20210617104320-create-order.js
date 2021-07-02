@@ -27,7 +27,7 @@ module.exports = {
                 type: Sequelize.INTEGER
             },
             category_name: {
-                type: Sequelize.STRING
+                type: Sequelize.TEXT
             },
             createdAt: {
                 allowNull: false,
