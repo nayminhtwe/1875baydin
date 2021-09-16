@@ -154,7 +154,7 @@ exports.profile = async (req, res) => {
 
 exports.userInfo = (req, res) => {
 
-    const kbzMerchCode = '200170';
+    const kbzMerchCode = '200125';
     const kbzAppId = 'kp0c795277cb7a46f48ef07d944243ea';
     const kbzKey = '6d74096f22adca0158f50a1e704ffd7e';
     const access_token = req.body.access_token;

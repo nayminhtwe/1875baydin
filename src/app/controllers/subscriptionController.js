@@ -55,7 +55,7 @@ exports.preCreate = (req, res) => {
 
     console.log(req.body)
 
-    const kbzMerchCode = '200170';
+    const kbzMerchCode = '200125';
     const kbzAppId = 'kp0c795277cb7a46f48ef07d944243ea';
     const kbzKey = '6d74096f22adca0158f50a1e704ffd7e';
     const kbzNotifyUrl = 'https://1875pb.blueplanet.com.mm/api/kbz/callback';
