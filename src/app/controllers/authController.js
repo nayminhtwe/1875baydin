@@ -190,7 +190,7 @@ exports.userInfo = (req, res) => {
     }
 
     axios({
-        url: 'http://api.kbzpay.com/web/gateway/uat/queryCustInfo',
+        url: 'http://api.kbzpay.com/web/gateway/queryCustInfo',
         method: 'POST',
         headers: {
             'accept': 'application/json',
