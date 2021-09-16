@@ -72,7 +72,7 @@ exports.preCreate = (req, res) => {
     const axios = require('axios');
 
     axios({
-        url: 'http://api.kbzpay.com/payment/gateway/precreate',
+        url: 'https://api.kbzpay.com/payment/gateway/precreate',
         method: 'POST',
         headers: {
             'accept': 'application/json',
