@@ -5,13 +5,15 @@ module.exports = (sequelize, DataTypes) => {
     content: DataTypes.STRING,
     image: DataTypes.STRING,
     for_date: DataTypes.DATE,
-    
+    start_date: DataTypes.DATE,
+    end_date: DataTypes.DATE,
+
   }, {
     tableName: 'contents',
     timestamps: true,
     underscored: true
   });
-  Content.associate = function(models) {
+  Content.associate = function (models) {
     Content.belongsTo(models.Category, {
       foreignKey: 'category_id'
     })
